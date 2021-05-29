@@ -8,7 +8,7 @@ const workoutSchema = new Schema(
             type: Date,
             default: () => new Date()
         },
-        exercise: [
+        exercises: [
             {
                 type: {
                     type: String,
@@ -48,8 +48,8 @@ const workoutSchema = new Schema(
 
 //adding a dynamic property to the schema
 workoutSchema.virtual("totalDuration").get(function(){
-    return this.exercise.reduce((total, exercise) =>{
-        return total +exercise.duration;
+    return this.exercises.reduce((total, exercises) =>{
+        return total +exercises.duration;
     }, 0)
 });
 
