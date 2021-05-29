@@ -1,10 +1,11 @@
-const router = require("express").Router();
+
 const Workout = require("../models/wokrout");
 const express = require("express");
 const mongoose = require("mongoose")
+const router = express.Router();
 //route to create a new workout
 router.post("/api/workouts", ({body}, res) => {
-    Workout.create({})
+    Workout.create(body)
         .then((dbWorkout) => {
             res.json(dbWorkout);
         })
@@ -13,12 +14,13 @@ router.post("/api/workouts", ({body}, res) => {
         });
 });
 //route to edit a new workout
-router.put("/api/workouts/:id", ({params, body}, res) => {
+router.put("/api/workouts/:id", ({body, params}, res) => {
     console.log("PARAMS", body, params);
 
     Workout.findOneAndUpdate(
         {_id: params.id},
-        {$push: {exercise: body}},
+        {   $inc: {totalDuration: body.duration},
+            $push: {exercises: body}},
         { new: true}
     )
     .then((dbWorkout) => {
@@ -49,4 +51,6 @@ router.get("/api/workouts", (req, res) => {
         console.log(error);
     });
 });
+
+
  module.exports = router; 
